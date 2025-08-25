@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leora - MORE (Настройки и профиль)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            /* Dark Theme Colors */
+            --black-pure: #000000;
+            --black-elevated: #0A0A0A;
+            --black-card: #1C1C1E;
+            --gray-primary: #8E8E93;
+            --gray-secondary: #48484A;
+            --gray-tertiary: #3C3C3E;
+            --gray-quaternary: #2C2C2E;
+            --white-5: rgba(255,255,255,0.05);
+            --white-10: rgba(255,255,255,0.10);
+            --white-15: rgba(255,255,255,0.15);
+            --white-20: rgba(255,255,255,0.20);
+            --white-30: rgba(255,255,255,0.30);
+            --white-60: rgba(255,255,255,0.60);
+            --white-90: rgba(255,255,255,0.90);
+            --accent-green: #32D74B;
+            --accent-red: #FF453A;
+            --accent-orange: #FF9F0A;
+            --accent-blue: #007AFF;
+            --accent-purple: #AF52DE;
+            --accent-cyan: #64D2FF;
+            --accent-pink: #FF2D55;
+            --gradient-main: linear-gradient(180deg, #000 0%, #0A0A0A 100%);
+            --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            --gradient-elevated: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+            --gradient-premium: linear-gradient(135deg, #AF52DE 0%, #64D2FF 100%);
+            --gradient-success: linear-gradient(135deg, #32D74B 0%, #28A745 100%);
+            --gradient-danger: linear-gradient(135deg, #FF453A 0%, #DC3545 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--gradient-main);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .app-container {
+            max-width: 430px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--black-pure);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            padding: 20px;
+            padding-top: 50px;
+            background: var(--black-elevated);
+            border-bottom: 1px solid var(--white-5);
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-title {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        .header-subtitle {
+            color: var(--gray-primary);
+            font-size: 14px;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            padding: 20px;
+            background: var(--gradient-elevated);
+            border-bottom: 1px solid var(--white-10);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--accent-purple) 0%, transparent 70%);
+            opacity: 0.1;
+            animation: pulse 6s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.1); opacity: 0.15; }
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 24px;
+            background: var(--gradient-premium);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 600;
+            position: relative;
+            box-shadow: 0 8px 24px rgba(175, 82, 222, 0.3);
+        }
+
+        .profile-avatar::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 24px;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.5;
+        }
+
+        .profile-details {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .profile-email {
+            font-size: 14px;
+            color: var(--gray-primary);
+            margin-bottom: 8px;
+        }
+
+        .profile-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            background: var(--gradient-premium);
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            gap: 4px;
+        }
+
+        /* Profile Stats */
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-card {
+            padding: 12px;
+            background: var(--gradient-card);
+            border: 1px solid var(--white-10);
+            border-radius: 12px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--gray-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding-bottom: 80px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gray-tertiary) transparent;
+        }
+
+        /* Settings Groups */
+        .settings-group {
+            padding: 20px;
+        }
+
+        .settings-group-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--gray-primary);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            padding-left: 4px;
+        }
+
+        /* Settings Items */
+        .settings-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: var(--gradient-card);
+            border: 1px solid var(--white-5);
+            border-radius: 14px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .settings-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .settings-item:hover {
+            transform: translateX(4px);
+            background: var(--white-10);
+            border-color: var(--white-15);
+        }
+
+        .settings-item:hover::before {
+            background: var(--accent-blue);
+        }
+
+        .settings-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .settings-icon.appearance { background: linear-gradient(135deg, #FF9F0A, #FF8C00); }
+        .settings-icon.notifications { background: linear-gradient(135deg, #007AFF, #0051D5); }
+        .settings-icon.security { background: linear-gradient(135deg, #32D74B, #28A745); }
+        .settings-icon.sync { background: linear-gradient(135deg, #AF52DE, #8E52DE); }
+        .settings-icon.integrations { background: linear-gradient(135deg, #64D2FF, #007AFF); }
+        .settings-icon.privacy { background: linear-gradient(135deg, #FF453A, #DC3545); }
+        .settings-icon.data { background: linear-gradient(135deg, #FF2D55, #C1306C); }
+        .settings-icon.help { background: linear-gradient(135deg, #FFD60A, #FFA00A); }
+        .settings-icon.about { background: linear-gradient(135deg, #8E8E93, #636366); }
+
+        .settings-content {
+            flex: 1;
+        }
+
+        .settings-title {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .settings-description {
+            font-size: 12px;
+            color: var(--gray-primary);
+        }
+
+        .settings-value {
+            font-size: 14px;
+            color: var(--gray-primary);
+            margin-right: 8px;
+        }
+
+        .settings-arrow {
+            color: var(--gray-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .settings-item:hover .settings-arrow {
+            transform: translateX(4px);
+            color: var(--gray-primary);
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            width: 51px;
+            height: 31px;
+            background: var(--gray-tertiary);
+            border-radius: 15.5px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--accent-green);
+        }
+
+        .toggle-knob {
+            width: 27px;
+            height: 27px;
+            background: white;
+            border-radius: 13.5px;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .toggle-switch.active .toggle-knob {
+            transform: translateX(20px);
+        }
+
+        /* Premium Settings */
+        .premium-settings {
+            margin: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(175, 82, 222, 0.1) 0%, rgba(100, 210, 255, 0.1) 100%);
+            border: 1px solid rgba(175, 82, 222, 0.3);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premium-settings::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-premium);
+        }
+
+        .premium-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .premium-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: var(--gradient-premium);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 8px 24px rgba(175, 82, 222, 0.4);
+        }
+
+        .premium-info {
+            flex: 1;
+        }
+
+        .premium-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .premium-subtitle {
+            font-size: 13px;
+            color: var(--gray-primary);
+        }
+
+        .premium-features {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .premium-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .premium-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            background: rgba(50, 215, 75, 0.2);
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .premium-expires {
+            padding: 12px;
+            background: var(--white-5);
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .premium-expires-label {
+            font-size: 13px;
+            color: var(--gray-primary);
+        }
+
+        .premium-expires-date {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Privacy Mode Card */
+        .privacy-mode-card {
+            margin: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255, 69, 58, 0.1) 0%, rgba(255, 159, 10, 0.1) 100%);
+            border: 1px solid rgba(255, 69, 58, 0.3);
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .privacy-mode-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .privacy-mode-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .privacy-mode-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent-red), var(--accent-orange));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .privacy-mode-description {
+            font-size: 13px;
+            color: var(--gray-primary);
+            line-height: 1.5;
+        }
+
+        /* Theme Selector */
+        .theme-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 20px;
+        }
+
+        .theme-option {
+            aspect-ratio: 1;
+            border-radius: 16px;
+            border: 2px solid var(--white-10);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-option.active {
+            border-color: var(--accent-blue);
+            transform: scale(1.05);
+        }
+
+        .theme-option:hover {
+            border-color: var(--white-20);
+            transform: scale(1.02);
+        }
+
+        .theme-preview {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .theme-preview.dark { background: var(--black-pure); }
+        .theme-preview.light { background: #FFFFFF; color: #000; }
+        .theme-preview.amoled { background: #000000; }
+        .theme-preview.system { background: linear-gradient(135deg, #000 50%, #FFF 50%); }
+        .theme-preview.focus { background: linear-gradient(135deg, #007AFF, #AF52DE); }
+        .theme-preview.energy { background: linear-gradient(135deg, #FF9F0A, #FF453A); }
+
+        .theme-name {
+            position: absolute;
+            bottom: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 8px;
+            background: var(--white-10);
+            backdrop-filter: blur(10px);
+            border-radius: 6px;
+        }
+
+        /* Color Accents */
+        .color-accents {
+            display: flex;
+            gap: 8px;
+            padding: 0 20px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .color-accents::-webkit-scrollbar {
+            display: none;
+        }
+
+        .color-option {
+            width: 44px;
+            height: 44px;
+            border-radius: 22px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .color-option::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 25px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .color-option.active::after {
+            border-color: white;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        /* Danger Zone */
+        .danger-zone {
+            margin: 20px;
+            padding: 20px;
+            background: rgba(255, 69, 58, 0.05);
+            border: 1px solid rgba(255, 69, 58, 0.2);
+            border-radius: 16px;
+        }
+
+        .danger-zone-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-red);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .danger-button {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            border: 1px solid var(--accent-red);
+            border-radius: 12px;
+            color: var(--accent-red);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 8px;
+        }
+
+        .danger-button:hover {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        /* Tab Bar */
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(180deg, transparent 0%, var(--black-pure) 30%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--white-5);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 90;
+        }
+
+        .tab-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-card);
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 12px;
+        }
+
+        .tab-item.active {
+            transform: scale(1.1);
+        }
+
+        .tab-icon {
+            width: 24px;
+            height: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-item.active .tab-icon {
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+
+        .tab-label {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-item:not(.active) {
+            opacity: 0.5;
+        }
+
+        .tab-item.active {
+            color: var(--accent-blue);
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .settings-item {
+            animation: slideInUp 0.3s ease backwards;
+        }
+
+        .settings-item:nth-child(1) { animation-delay: 0.05s; }
+        .settings-item:nth-child(2) { animation-delay: 0.1s; }
+        .settings-item:nth-child(3) { animation-delay: 0.15s; }
+
+        /* Scrollbar */
+        .content-area::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .content-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .content-area::-webkit-scrollbar-thumb {
+            background: var(--gray-tertiary);
+            border-radius: 2px;
+        }
+
+        .content-area::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-secondary);
+        }
+
+        /* Sync Status Badge */
+        .sync-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            background: var(--white-10);
+            border-radius: 6px;
+            font-size: 11px;
+        }
+
+        .sync-status.synced {
+            color: var(--accent-green);
+        }
+
+        .sync-status.syncing {
+            color: var(--accent-orange);
+        }
+
+        .sync-status.error {
+            color: var(--accent-red);
+        }
+
+        .sync-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 3px;
+            background: currentColor;
+        }
+
+        .sync-status.syncing .sync-dot {
+            animation: pulse-sync 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-sync {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="header-title">Настройки</h1>
+            <p class="header-subtitle">Управление и персонализация</p>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-info">
+                <div class="profile-avatar">АИ</div>
+                <div class="profile-details">
+                    <div class="profile-name">Александр Иванов</div>
+                    <div class="profile-email">alexander@example.com</div>
+                    <div class="profile-badge">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="white">
+                            <path d="M6 0L7.5 3.5L11 4L8.5 6.5L9 10L6 8.5L3 10L3.5 6.5L1 4L4.5 3.5L6 0Z"/>
+                        </svg>
+                        PREMIUM
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-stats">
+                <div class="stat-card">
+                    <div class="stat-value">847</div>
+                    <div class="stat-label">Дней с нами</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">12.5K</div>
+                    <div class="stat-label">Транзакций</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">2,341</div>
+                    <div class="stat-label">Задач выполнено</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Premium Status -->
+            <div class="premium-settings">
+                <div class="premium-header">
+                    <div class="premium-icon">⚡</div>
+                    <div class="premium-info">
+                        <div class="premium-title">Premium активен</div>
+                        <div class="premium-subtitle">Все функции разблокированы</div>
+                    </div>
+                </div>
+                <div class="premium-features">
+                    <div class="premium-feature">
+                        <div class="premium-check">✓</div>
+                        <span>AI-анализ и рекомендации</span>
+                    </div>
+                    <div class="premium-feature">
+                        <div class="premium-check">✓</div>
+                        <span>Синхронизация между устройствами</span>
+                    </div>
+                    <div class="premium-feature">
+                        <div class="premium-check">✓</div>
+                        <span>Расширенная аналитика</span>
+                    </div>
+                    <div class="premium-feature">
+                        <div class="premium-check">✓</div>
+                        <span>Приоритетная поддержка</span>
+                    </div>
+                </div>
+                <div class="premium-expires">
+                    <span class="premium-expires-label">Продление подписки</span>
+                    <span class="premium-expires-date">15 сентября 2025</span>
+                </div>
+            </div>
+
+            <!-- Appearance Settings -->
+            <div class="settings-group">
+                <div class="settings-group-title">ВНЕШНИЙ ВИД</div>
+                
+                <div class="settings-item" onclick="showThemeSelector()">
+                    <div class="settings-icon appearance">🎨</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Тема</div>
+                        <div class="settings-description">Тёмная, светлая, системная</div>
+                    </div>
+                    <span class="settings-value">Тёмная</span>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon appearance">🎨</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Акцентный цвет</div>
+                        <div class="settings-description">Основной цвет интерфейса</div>
+                    </div>
+                    <span class="settings-value">Синий</span>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon appearance">📐</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Компактный режим</div>
+                        <div class="settings-description">Больше информации на экране</div>
+                    </div>
+                    <div class="toggle-switch" onclick="toggleSwitch(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="settings-group">
+                <div class="settings-group-title">УВЕДОМЛЕНИЯ</div>
+                
+                <div class="settings-item">
+                    <div class="settings-icon notifications">🔔</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Задачи</div>
+                        <div class="settings-description">Напоминания о задачах</div>
+                    </div>
+                    <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon notifications">💰</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Финансы</div>
+                        <div class="settings-description">Превышение бюджета, цели</div>
+                    </div>
+                    <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon notifications">🎯</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Привычки</div>
+                        <div class="settings-description">Напоминания о привычках</div>
+                    </div>
+                    <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon notifications">🌙</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Тихие часы</div>
+                        <div class="settings-description">22:00 - 08:00</div>
+                    </div>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Security Settings -->
+            <div class="settings-group">
+                <div class="settings-group-title">БЕЗОПАСНОСТЬ И ПРИВАТНОСТЬ</div>
+                
+                <div class="settings-item">
+                    <div class="settings-icon security">🔐</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Passkeys</div>
+                        <div class="settings-description">Безопасный вход без пароля</div>
+                    </div>
+                    <span class="settings-value">Включён</span>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon security">👤</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Face ID / Touch ID</div>
+                        <div class="settings-description">Быстрый доступ</div>
+                    </div>
+                    <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon security">💳</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Защита финансов</div>
+                        <div class="settings-description">Дополнительная биометрия</div>
+                    </div>
+                    <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon security">⏱️</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Автоблокировка</div>
+                        <div class="settings-description">Через 1 минуту</div>
+                    </div>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon security">👁️</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Скрыть суммы</div>
+                        <div class="settings-description">В публичных местах</div>
+                    </div>
+                    <div class="toggle-switch" onclick="toggleSwitch(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Privacy Mode Card -->
+            <div class="privacy-mode-card">
+                <div class="privacy-mode-header">
+                    <div class="privacy-mode-title">
+                        <div class="privacy-mode-icon">🔒</div>
+                        <span>AI Приватность</span>
+                    </div>
+                    <span class="sync-status synced">
+                        <span class="sync-dot"></span>
+                        Локально
+                    </span>
+                </div>
+                <div class="privacy-mode-description">
+                    Ваши данные обрабатываются локально на устройстве. AI-анализ происходит без передачи в облако. Включите гибридный режим для расширенных возможностей.
+                </div>
+            </div>
+
+            <!-- Data & Sync Settings -->
+            <div class="settings-group">
+                <div class="settings-group-title">ДАННЫЕ И СИНХРОНИЗАЦИЯ</div>
+                
+                <div class="settings-item">
+                    <div class="settings-icon sync">☁️</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Синхронизация</div>
+                        <div class="settings-description">Между всеми устройствами</div>
+                    </div>
+                    <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon data">📊</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Экспорт данных</div>
+                        <div class="settings-description">CSV, PDF, JSON</div>
+                    </div>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon data">💾</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Резервные копии</div>
+                        <div class="settings-description">Автоматически каждый день</div>
+                    </div>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon sync">🔄</div>
+                    <div class="settings-content">
+                        <div class="settings-title">История изменений</div>
+                        <div class="settings-description">30 дней истории</div>
+                    </div>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Integrations -->
+            <div class="settings-group">
+                <div class="settings-group-title">ИНТЕГРАЦИИ</div>
+                
+                <div class="settings-item">
+                    <div class="settings-icon integrations">📅</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Календарь</div>
+                        <div class="settings-description">Apple Calendar</div>
+                    </div>
+                    <span class="settings-value">Подключён</span>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon integrations">❤️</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Здоровье</div>
+                        <div class="settings-description">Apple Health</div>
+                    </div>
+                    <span class="settings-value">Подключён</span>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon integrations">⚡</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Виджеты</div>
+                        <div class="settings-description">Домашний и экран блокировки</div>
+                    </div>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon integrations">🎙️</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Siri Shortcuts</div>
+                        <div class="settings-description">Голосовые команды</div>
+                    </div>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon integrations">⌚</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Apple Watch</div>
+                        <div class="settings-description">Complications и приложение</div>
+                    </div>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Support -->
+            <div class="settings-group">
+                <div class="settings-group-title">ПОДДЕРЖКА</div>
+                
+                <div class="settings-item">
+                    <div class="settings-icon help">❓</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Помощь</div>
+                        <div class="settings-description">Руководства и FAQ</div>
+                    </div>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon help">💬</div>
+                    <div class="settings-content">
+                        <div class="settings-title">Приоритетная поддержка</div>
+                        <div class="settings-description">Premium чат 24/7</div>
+                    </div>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon about">ℹ️</div>
+                    <div class="settings-content">
+                        <div class="settings-title">О приложении</div>
+                        <div class="settings-description">Версия 2.0.0</div>
+                    </div>
+                    <svg class="settings-arrow" width="8" height="14" viewBox="0 0 8 14" fill="currentColor">
+                        <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="danger-zone">
+                <div class="danger-zone-title">Опасная зона</div>
+                <button class="danger-button" onclick="showLogoutConfirm()">Выйти из аккаунта</button>
+                <button class="danger-button" onclick="showDeleteConfirm()">Удалить аккаунт</button>
+            </div>
+
+            <!-- Extra padding at bottom -->
+            <div style="height: 40px;"></div>
+        </div>
+
+        <!-- Tab Bar -->
+        <div class="tab-bar">
+            <div class="tab-item" onclick="navigateTab('home')">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12L5 10M5 10L12 3L19 10M5 10V20C5 20.5523 5.44772 21 6 21H9V16C9 15.4477 9.44772 15 10 15H14C14.5523 15 15 15.4477 15 16V21H18C18.5523 21 19 20.5523 19 20V10M19 10L21 12"/>
+                </svg>
+                <span class="tab-label">Главная</span>
+            </div>
+            <div class="tab-item" onclick="navigateTab('finance')">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="6" width="18" height="12" rx="2"/>
+                    <path d="M3 10H21M7 15H7.01M11 15H13"/>
+                </svg>
+                <span class="tab-label">Финансы</span>
+            </div>
+            <div class="tab-item" onclick="navigateTab('planner')">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/>
+                    <path d="M16 2V6M8 2V6M3 10H21M8 14H8.01M12 14H12.01M16 14H16.01M8 18H8.01M12 18H12.01M16 18H16.01"/>
+                </svg>
+                <span class="tab-label">Планер</span>
+            </div>
+            <div class="tab-item" onclick="navigateTab('insights')">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                </svg>
+                <span class="tab-label">Инсайты</span>
+            </div>
+            <div class="tab-item active" onclick="navigateTab('more')">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="1"/>
+                    <circle cx="12" cy="5" r="1"/>
+                    <circle cx="12" cy="19" r="1"/>
+                </svg>
+                <span class="tab-label">Ещё</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Switch
+        function toggleSwitch(element) {
+            element.classList.toggle('active');
+            
+            // Haptic feedback simulation
+            if (navigator.vibrate) {
+                navigator.vibrate(10);
+            }
+        }
+
+        // Navigate tabs
+        function navigateTab(tabName) {
+            console.log('Navigate to:', tabName);
+            // В реальном приложении здесь будет навигация между экранами
+        }
+
+        // Show theme selector (mock)
+        function showThemeSelector() {
+            console.log('Show theme selector modal');
+            // В реальном приложении откроется модальное окно с выбором темы
+        }
+
+        // Show logout confirmation
+        function showLogoutConfirm() {
+            if (confirm('Вы уверены, что хотите выйти из аккаунта?')) {
+                console.log('Logging out...');
+                // Logout logic
+            }
+        }
+
+        // Show delete account confirmation
+        function showDeleteConfirm() {
+            if (confirm('Это действие необратимо. Все ваши данные будут удалены. Продолжить?')) {
+                if (confirm('Вы точно уверены? Это последнее предупреждение.')) {
+                    console.log('Deleting account...');
+                    // Delete account logic
+                }
+            }
+        }
+
+        // Animate elements on load
+        window.addEventListener('load', () => {
+            // Animate profile stats
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues.forEach((stat, index) => {
+                const finalValue = parseInt(stat.textContent.replace(/[^\d]/g, ''));
+                let currentValue = 0;
+                const increment = finalValue / 30;
+                
+                const timer = setInterval(() => {
+                    currentValue += increment;
+                    if (currentValue >= finalValue) {
+                        currentValue = finalValue;
+                        clearInterval(timer);
+                    }
+                    
+                    // Format the value
+                    if (finalValue > 1000) {
+                        stat.textContent = (currentValue / 1000).toFixed(1) + 'K';
+                    } else {
+                        stat.textContent = Math.floor(currentValue);
+                    }
+                }, 30);
+            });
+        });
+
+        // Simulate sync status changes
+        setInterval(() => {
+            const syncStatuses = document.querySelectorAll('.sync-status');
+            syncStatuses.forEach(status => {
+                const states = ['synced', 'syncing'];
+                const currentState = states[Math.floor(Math.random() * states.length)];
+                
+                // Remove all state classes
+                status.classList.remove('synced', 'syncing', 'error');
+                // Add new state
+                status.classList.add(currentState);
+                
+                // Update text
+                const textMap = {
+                    'synced': 'Синхронизировано',
+                    'syncing': 'Синхронизация...',
+                    'error': 'Ошибка'
+                };
+                
+                const dot = status.querySelector('.sync-dot');
+                if (dot) {
+                    status.innerHTML = `<span class="sync-dot"></span>${textMap[currentState] || 'Локально'}`;
+                }
+            });
+        }, 5000);
+
+        // Add press effect to settings items
+        document.querySelectorAll('.settings-item').forEach(item => {
+            item.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+            
+            item.addEventListener('touchend', function() {
+                this.style.transform = '';
+            });
+        });
+
+        // Premium features hover effect
+        document.querySelectorAll('.premium-feature').forEach(feature => {
+            feature.addEventListener('mouseenter', function() {
+                this.querySelector('.premium-check').style.transform = 'scale(1.2)';
+            });
+            
+            feature.addEventListener('mouseleave', function() {
+                this.querySelector('.premium-check').style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
